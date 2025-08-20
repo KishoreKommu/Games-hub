@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reaction Time Tester</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        #gameBox {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            background-color: #4caf50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border-radius: 10px;
+            display: none;
+        }
+
+        #startButton {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #startButton:hover {
+            background-color: #0056b3;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <h1>Reaction Time Tester</h1>
+    <p>Click the box as quickly as you can when it turns green!</p>
+    <button id="startButton">Start Game</button>
+    <div id="gameBox"></div>
+    <p id="result"></p>
+
+    <script>
+        let startButton = document.getElementById('startButton');
+        let gameBox = document.getElementById('gameBox');
+        let result = document.getElementById('result');
+        let startTime;
+
+        startButton.addEventListener('click', () => {
+            result.textContent = '';
+            startButton.style.display = 'none';
+            gameBox.style.display = 'none';
+
+            // Random delay before showing the game box
+            let delay = Math.random() * 2000 + 1000; // Between 1 to 3 seconds
+
+            setTimeout(() => {
+                gameBox.style.display = 'flex';
+                startTime = new Date().getTime();
+            }, delay);
+        });
+
+        gameBox.addEventListener('click', () => {
+            let endTime = new Date().getTime();
+            let reactionTime = endTime - startTime;
+            result.textContent = `Your reaction time is: ${reactionTime} ms`;
+
+            // Reset game
+            gameBox.style.display = 'none';
+            startButton.style.display = 'inline-block';
+        });
+    </script>
+</body>
+</html>

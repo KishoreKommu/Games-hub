@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Games Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #e3f2fd;
+        }
+        header {
+            background-color: #1565c0;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 1.8em;
+        }
+        .search-bar {
+            display: flex;
+            align-items: center;
+        }
+        .search-bar input {
+            padding: 8px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            width: 200px;
+            outline: none;
+        }
+        .search-bar button {
+            margin-left: 5px;
+            padding: 8px 12px;
+            font-size: 16px;
+            background-color: #0d47a1;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .search-bar button:hover {
+            background-color: #0b3c91;
+        }
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            padding: 40px;
+            max-width: 1300px;
+            margin: auto;
+        }
+        .card {
+            background: white;
+            border-radius: 08px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            text-align: center;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2);
+        }
+        .card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        .card h3 {
+            margin: 0;
+            padding: 12px;
+            font-size: 1.2em;
+            color: #333;
+        }
+        footer {
+            text-align: center;
+            padding: 15px;
+            background: #1565c0;
+            color: white;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Games</h1>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for a game..." onkeyup="searchGame()">
+            <button onclick="searchGame()">Search</button>
+        </div>
+    </header>
+</header>
+<section class="card-container">
+    <div class="card" data-game="tic-tac-toe">
+        <a href="tic_tac.html"><img src="tic-tac.png" alt="Game 1">
+            <h3>Tic-Tac-Toe</h3></a>
+    </div>
+    <div class="card" data-game="rock-paper-scissors">
+       <a href="rock_paper.html"> <img src="rock_paper.png" alt="Game 2">
+        <h3>Rock-Paper-Scissors</h3></a>
+    </div>
+    <div class="card" data-game="guess-the-number">
+        <a href="guessing.html"><img src="guessing.png" alt="Game 3">
+            <h3>Guess the Number</h3></a>
+    </div>
+    <div class="card" data-game="2048">
+        <a href="2048.html"><img src="2048.png" alt="Game 4">
+            <h3>2048</h3></a>
+    </div>
+    <div class="card" data-game="baloon">
+        <a href="baloon.html"><img src="baloon.png" alt="Game 5">
+            <h3>Baloon Pop</h3></a>
+    </div>
+    <div class="card" data-game="paper-plane">
+       <a href="paper-plane.html"> <img src="paper-plane.png" alt="Game 6">
+        <h3>Paper Plane</h3></a>
+    </div>
+    <div class="card" data-game="button_masher">
+        <a href="button_masher.html"><img src="button_masher.png" alt="Game 7">
+            <h3>Button Masher</h3></a>
+    </div>
+    <div class="card" data-game="color_guessing">
+        <a href="color_guessing.html"><img src="color_guessing.png" alt="Game 8">
+            <h3>Color Guessing </h3></a>
+    </div>
+    <div class="card" data-game="connect-four">
+        <a href="connect-four.html"><img src="connect-four.png" alt="Game 9">
+            <h3>Connect Four</h3></a>
+    </div>
+    <div class="card" data-game="dice">
+        <a href="dice.html"><img src="dice.png" alt="Game 10">
+            <h3>Dice Roller</h3></a>
+    </div>
+    <div class="card" data-game="hangman">
+        <a href="hangman.html"><img src="hangman.png" alt="Game 11">
+            <h3>Hangman</h3></a>
+    </div>
+    <div class="card" data-game="light-out">
+        <a href="light-out.html"><img src="light-out.png" alt="Game 12">
+            <h3>Lights Out Puzzle</h3></a>
+    </div>
+    <div class="card" data-game="memory_card">
+        <a href="memory_card.html"><img src="memory_card.png" alt="Game 13">
+            <h3>Memory Card</h3></a>
+    </div>
+    <div class="card" data-game="quiz">
+        <a href="quiz.html"><img src="quiz.jpg" alt="Game 14">
+            <h3>Random Quiz</h3></a>
+    </div>
+    <div class="card" data-game="snake">
+        <a href="snake.html"><img src="snake.png" alt="Game 15">
+            <h3>Snake</h3></a>
+    </div>
+    <div class="card" data-game="tower-builder">
+        <a href="tower-builder.html"><img src="tower-builder.png" alt="Game 16">
+            <h3>Tower Builder</h3></a>
+    </div>
+    <div class="card" data-game="treasure">
+        <a href="treasure.html"><img src="treasure.png" alt="Game 17">
+            <h3>Treasure Hunt</h3></a>
+    </div>
+    <div class="card" data-game="words-typing">
+        <a href="words-typing.html"><img src="words-typing.png" alt="Game 18">
+            <h3>Word Typing</h3></a>
+    </div>
+    <div class="card" data-game="sudoku">
+        <a href="sudoku.html"><img src="sudoku.jpg" alt="Game 19">
+            <h3>Sudoku</h3></a>
+    </div>
+    <div class="card" data-game="pong">
+        <a href="pong.html"><img src="pong.png" alt="Game 20">
+            <h3>Pong Game</h3></a>
+    </div>
+    <div class="card" data-game="Whack-a-Mole">
+        <a href="whack-a-mole.html"><img src="whack-a-mole.png" alt="Game 20">
+            <h3>Whack-a-Mole Game</h3></a>
+    </div>
+    <div class="card" data-game="Math-Quiz">
+        <a href="math-quiz.html"><img src="math-quiz.png" alt="Game 20">
+            <h3>Math Quiz Game</h3></a>
+    </div>
+    <div class="card" data-game="Simon-Says">
+        <a href="simon-says.html"><img src="simon-says.png" alt="Game 20">
+            <h3>Simon Says Game</h3></a>
+    </div>
+    <div class="card" data-game="Flappy-Bird">
+        <a href="flappy-bird.html"><img src="flappy-bird.png" alt="Game 20">
+            <h3>Flappy Bird Clone</h3></a>
+    </div>
+    <div class="card" data-game="Maze-Game">
+        <a href="maze.html"><img src="maze.png" alt="Game 20">
+            <h3>Maze Game</h3></a>
+    </div>
+    <div class="card" data-game="Word-Scramble-Game">
+        <a href="word-scramble.html"><img src="word-scramble.png" alt="Game 20">
+            <h3>Word Scramble Game</h3></a>
+    </div>
+    <div class="card" data-game="Reaction-Time-Tester">
+        <a href="reaction-time.html"><img src="reaction-time.png" alt="Game 20">
+            <h3>Reaction Time Tester</h3></a>
+    </div>
+    <div class="card" data-game="Catch-the-Falling-Object">
+        <a href="catch-the-object.html"><img src="catch-the-object.png" alt="Game 20">
+            <h3>Catch the Falling Object</h3></a>
+    </div>
+    <div class="card" data-game="Space-Shooter-Game">
+        <a href="space-shooter.html"><img src="space-shooter.png" alt="Game 20">
+            <h3>Space Shooter Game</h3></a>
+    </div>
+   
+    </div>
+</section>
+<footer>
+    &copy; 2025 Games Website. All rights reserved.
+</footer>
+    <script>
+        function searchGame() {
+            const query = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.card');
+            let found = false;
+
+            cards.forEach(card => {
+                const game = card.getAttribute('data-game');
+                if (game.includes(query)) {
+                    card.style.display = 'block';
+                    card.style.border = '3px solid #0d47a1';
+                    setTimeout(() => card.style.border = 'none', 2000);
+                    found = true;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (!found) {
+                alert('Game not found!');
+            }
+        }
+    </script>
+</body>
+</html>
+

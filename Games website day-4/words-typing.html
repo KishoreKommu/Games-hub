@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Typing Game</title>
+    <style>
+        /* Internal CSS */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        #gameContainer {
+            text-align: center;
+        }
+        #word {
+            font-size: 2em;
+            margin-bottom: 20px;
+        }
+        #input {
+            font-size: 1.5em;
+            padding: 5px;
+        }
+        #score {
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+        #timer {
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="gameContainer">
+        <div id="word"></div>
+        <input type="text" id="input" oninput="checkInput()" autofocus>
+        <div id="score"></div>
+        <div id="timer"></div>
+    </div>
+    <script>
+        // Internal JavaScript
+        const words = ["javascript", "coding", "html", "css", "typing", "game", "challenge", "speed", "accuracy", "random"];
+        let currentWord = '';
+        let score = 0;
+        let timeLimit = 5; // Increased time limit to slow down word disappearance
+        let timeLeft = timeLimit;
+        let timer;
+
+        function startGame() {
+            currentWord = words[Math.floor(Math.random() * words.length)];
+            document.getElementById('word').innerText = currentWord;
+            document.getElementById('input').value = '';
+            timeLeft = timeLimit;
+            document.getElementById('score').innerText = `Score: ${score}`;
+            document.getElementById('timer').innerText = `Time Left: ${timeLeft}s`;
+
+            if (timer) clearInterval(timer);
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').innerText = `Time Left: ${timeLeft}s`;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    alert('Time\'s up! Game Over. Your score: ' + score);
+                    document.location.reload();
+                }
+            }, 1000);
+        }
+
+        function checkInput() {
+            const input = document.getElementById('input').value;
+            if (input === currentWord) {
+                score += timeLeft;
+                clearInterval(timer);
+                setTimeout(startGame, 500); // Added a slight delay before the next word appears
+            }
+        }
+
+        startGame();
+    </script>
+</body>
+</html>

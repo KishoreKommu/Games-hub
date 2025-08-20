@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paper Plane Game</title>
+    <style>
+        /* Internal CSS */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #87ceeb;
+            margin: 0;
+        }
+        canvas {
+            border: 1px solid #000;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <script>
+        // Internal JavaScript
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let plane = {
+            x: 50,
+            y: 200,
+            width: 50,
+            height: 30,
+            dy: 0
+        };
+
+        let obstacles = [];
+        let score = 0;
+
+        function drawPlane() {
+            ctx.fillStyle = 'white';
+            ctx.fillRect(plane.x, plane.y, plane.width, plane.height);
+        }
+
+        function drawObstacles() {
+            ctx.fillStyle = 'brown';
+            obstacles.forEach(obstacle => {
+                ctx.fillRect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
+            });
+        }
+
+        function updateObstacles() {
+            if (obstacles.length === 0 || obstacles[obstacles.length - 1].x < canvas.width - 200) {
+                const obstacleHeight = Math.random() * (canvas.height - 200) + 50;
+                obstacles.push({
+                    x: canvas.width,
+                    y: 0,
+                    width: 20,
+                    height: obstacleHeight
+                });
+
+                obstacles.push({
+                    x: canvas.width,
+                    y: obstacleHeight + 100,
+                    width: 20,
+                    height: canvas.height - obstacleHeight - 100
+                });
+            }
+
+            obstacles.forEach(obstacle => {
+                obstacle.x -= 2;
+            });
+
+            if (obstacles[0].x + obstacles[0].width < 0) {
+                obstacles.shift();
+                obstacles.shift();
+                score++;
+            }
+        }
+
+        function checkCollision() {
+            for (let obstacle of obstacles) {
+                if (plane.x < obstacle.x + obstacle.width && plane.x + plane.width > obstacle.x &&
+                    plane.y < obstacle.y + obstacle.height && plane.y + plane.height > obstacle.y) {
+                    return true;
+                }
+            }
+            if (plane.y < 0 || plane.y + plane.height > canvas.height) {
+                return true;
+            }
+            return false;
+        }
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawPlane();
+            drawObstacles();
+            updateObstacles();
+
+            plane.y += plane.dy;
+
+            if (checkCollision()) {
+                alert('Game Over! Your score: ' + score);
+                document.location.reload();
+            } else {
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        document.addEventListener('keydown', event => {
+            if (event.code === 'ArrowUp') {
+                plane.dy = -3;
+            }
+        });
+
+        document.addEventListener('keyup', event => {
+            if (event.code === 'ArrowUp') {
+                plane.dy = 3;
+            }
+        });
+
+        gameLoop();
+    </script>
+</body>
+</html>

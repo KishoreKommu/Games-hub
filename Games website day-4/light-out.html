@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lights Out Puzzle Game</title>
+    <style>
+        /* Internal CSS */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        #gameContainer {
+            display: grid;
+            grid-template-columns: repeat(5, 60px);
+            grid-gap: 5px;
+        }
+        .cell {
+            width: 60px;
+            height: 60px;
+            background-color: #000;
+            cursor: pointer;
+        }
+        .cell.on {
+            background-color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Lights Out Puzzle Game</h1>
+        <div id="gameContainer"></div>
+        <div id="message"></div>
+    </div>
+    <script>
+        // Internal JavaScript
+        const gridSize = 5;
+        const gameContainer = document.getElementById('gameContainer');
+        let grid = Array.from({ length: gridSize }, () => Array(gridSize).fill(false));
+
+        function createGrid() {
+            for (let i = 0; i < gridSize; i++) {
+                for (let j = 0; j < gridSize; j++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+                    cell.dataset.row = i;
+                    cell.dataset.col = j;
+                    cell.addEventListener('click', handleCellClick);
+                    gameContainer.appendChild(cell);
+                }
+            }
+        }
+
+        function handleCellClick(event) {
+            const row = parseInt(event.target.dataset.row);
+            const col = parseInt(event.target.dataset.col);
+            toggleLights(row, col);
+            updateGrid();
+            checkWin();
+        }
+
+        function toggleLights(row, col) {
+            grid[row][col] = !grid[row][col];
+            if (row > 0) grid[row - 1][col] = !grid[row - 1][col];
+            if (row < gridSize - 1) grid[row + 1][col] = !grid[row + 1][col];
+            if (col > 0) grid[row][col - 1] = !grid[row][col - 1];
+            if (col < gridSize - 1) grid[row][col + 1] = !grid[row][col + 1];
+        }
+
+        function updateGrid() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => {
+                const row = parseInt(cell.dataset.row);
+                const col = parseInt(cell.dataset.col);
+                if (grid[row][col]) {
+                    cell.classList.add('on');
+                } else {
+                    cell.classList.remove('on');
+                }
+            });
+        }
+
+        function checkWin() {
+            if (grid.every(row => row.every(cell => !cell))) {
+                document.getElementById('message').textContent = 'Congratulations! You turned off all the lights!';
+            }
+        }
+
+        createGrid();
+        updateGrid();
+    </script>
+</body>
+</html>

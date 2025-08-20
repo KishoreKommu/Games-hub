@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maze Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            background-color: #f4f4f4;
+        }
+
+        #maze {
+            display: grid;
+            grid-template-columns: repeat(10, 40px);
+            grid-gap: 2px;
+            margin: 20px auto;
+            width: max-content;
+        }
+
+        .cell {
+            width: 40px;
+            height: 40px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+        }
+
+        .wall {
+            background-color: #333;
+        }
+
+        .start {
+            background-color: green;
+        }
+
+        .end {
+            background-color: red;
+        }
+
+        .player {
+            background-color: blue;
+        }
+
+        h1 {
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <h1>Maze Game</h1>
+    <div id="maze"></div>
+    <p>Use arrow keys to move the player (blue) to the finish (red).</p>
+
+    <script>
+        function generateRandomMaze(size) {
+            const maze = Array(size).fill(null).map(() => Array(size).fill(1));
+
+            for (let y = 1; y < size - 1; y++) {
+                for (let x = 1; x < size - 1; x++) {
+                    maze[y][x] = Math.random() > 0.3 ? 0 : 1;
+                }
+            }
+
+            maze[1][1] = 0; // Start position
+            maze[size - 2][size - 2] = 0; // End position
+
+            return maze;
+        }
+
+        const mazeLayout = generateRandomMaze(10);
+        const mazeContainer = document.getElementById('maze');
+        let playerPosition = { x: 1, y: 1 };
+        const finishPosition = { x: 8, y: 8 };
+
+        function renderMaze() {
+            mazeContainer.innerHTML = '';
+            for (let y = 0; y < mazeLayout.length; y++) {
+                for (let x = 0; x < mazeLayout[y].length; x++) {
+                    const cell = document.createElement('div');
+                    cell.classList.add('cell');
+
+                    if (mazeLayout[y][x] === 1) {
+                        cell.classList.add('wall');
+                    } else if (x === playerPosition.x && y === playerPosition.y) {
+                        cell.classList.add('player');
+                    } else if (x === finishPosition.x && y === finishPosition.y) {
+                        cell.classList.add('end');
+                    } else if (x === 1 && y === 1) {
+                        cell.classList.add('start');
+                    }
+
+                    mazeContainer.appendChild(cell);
+                }
+            }
+        }
+
+        function movePlayer(dx, dy) {
+            const newX = playerPosition.x + dx;
+            const newY = playerPosition.y + dy;
+
+            if (mazeLayout[newY][newX] === 0) {
+                playerPosition.x = newX;
+                playerPosition.y = newY;
+                renderMaze();
+
+                if (newX === finishPosition.x && newY === finishPosition.y) {
+                    alert('Congratulations! You reached the finish!');
+                }
+            }
+        }
+
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case 'ArrowUp':
+                    movePlayer(0, -1);
+                    break;
+                case 'ArrowDown':
+                    movePlayer(0, 1);
+                    break;
+                case 'ArrowLeft':
+                    movePlayer(-1, 0);
+                    break;
+                case 'ArrowRight':
+                    movePlayer(1, 0);
+                    break;
+            }
+        });
+
+        renderMaze();
+    </script>
+</body>
+</html>
+

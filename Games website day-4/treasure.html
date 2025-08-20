@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Treasure Hunt Game</title>
+    <style>
+        /* Internal CSS */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        #gameContainer {
+            display: grid;
+            grid-template-columns: repeat(10, 30px);
+            grid-gap: 5px;
+        }
+        .cell {
+            width: 30px;
+            height: 30px;
+            background-color: #b0c4de;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        #feedback {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1>Treasure Hunt Game</h1>
+        <div id="gameContainer"></div>
+        <div id="feedback"></div>
+    </div>
+    <script>
+        // Internal JavaScript
+        const gridSize = 10;
+        const totalCells = gridSize * gridSize;
+        const gameContainer = document.getElementById('gameContainer');
+        const feedback = document.getElementById('feedback');
+        let treasurePosition = {
+            x: Math.floor(Math.random() * gridSize),
+            y: Math.floor(Math.random() * gridSize)
+        };
+
+        function createGrid() {
+            for (let i = 0; i < totalCells; i++) {
+                const cell = document.createElement('div');
+                cell.classList.add('cell');
+                cell.dataset.x = i % gridSize;
+                cell.dataset.y = Math.floor(i / gridSize);
+                cell.addEventListener('click', handleCellClick);
+                gameContainer.appendChild(cell);
+            }
+        }
+
+        function handleCellClick(event) {
+            const x = parseInt(event.target.dataset.x);
+            const y = parseInt(event.target.dataset.y);
+            const distance = Math.sqrt(Math.pow(x - treasurePosition.x, 2) + Math.pow(y - treasurePosition.y, 2));
+            if (distance === 0) {
+                feedback.textContent = 'Congratulations! You found the treasure!';
+                event.target.style.backgroundColor = 'gold';
+                endGame();
+            } else if (distance <= 2) {
+                feedback.textContent = 'Hot!';
+                event.target.style.backgroundColor = 'red';
+            } else if (distance <= 5) {
+                feedback.textContent = 'Warm!';
+                event.target.style.backgroundColor = 'orange';
+            } else {
+                feedback.textContent = 'Cold!';
+                event.target.style.backgroundColor = 'blue';
+            }
+        }
+
+        function endGame() {
+            const cells = document.querySelectorAll('.cell');
+            cells.forEach(cell => cell.removeEventListener('click', handleCellClick));
+        }
+
+        createGrid();
+    </script>
+</body>
+</html>

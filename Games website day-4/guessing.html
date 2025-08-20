@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Guessing Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 32px;
+        }
+
+        .game-container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        input[type="number"] {
+            padding: 10px;
+            width: 60%;
+            font-size: 18px;
+            margin: 10px;
+            border: 2px solid #333;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            margin-top: 10px;
+            cursor: pointer;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .restart-btn {
+            background-color: #007bff;
+            margin-top: 15px;
+        }
+
+        .restart-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Guess the Number</h1>
+    <div class="game-container">
+        <p>I'm thinking of a number between 1 and 100. Try to guess it!</p>
+        <input type="number" id="guessInput" min="1" max="100" placeholder="Enter a number" />
+        <button onclick="checkGuess()">Guess</button>
+
+        <div class="result" id="resultText"></div>
+        <button class="restart-btn" onclick="restartGame()" style="display: none;">Play Again</button>
+    </div>
+
+    <script>
+        let secretNumber;
+        let attempts = 0;
+
+        // Function to start a new game
+        function startGame() {
+            secretNumber = Math.floor(Math.random() * 100) + 1;  // Random number between 1 and 100
+            attempts = 0;
+            document.getElementById("guessInput").value = "";
+            document.getElementById("resultText").textContent = "";
+            document.querySelector(".restart-btn").style.display = "none";  // Hide restart button initially
+        }
+
+        // Function to check the player's guess
+        function checkGuess() {
+            const guessInput = document.getElementById("guessInput");
+            const userGuess = parseInt(guessInput.value);
+
+            if (isNaN(userGuess) || userGuess < 1 || userGuess > 100) {
+                document.getElementById("resultText").textContent = "Please enter a valid number between 1 and 100.";
+                return;
+            }
+
+            attempts++;
+
+            if (userGuess < secretNumber) {
+                document.getElementById("resultText").textContent = "Too low! Try again.";
+            } else if (userGuess > secretNumber) {
+                document.getElementById("resultText").textContent = "Too high! Try again.";
+            } else {
+                document.getElementById("resultText").textContent =`Congratulations! You guessed the number in ${attempts} attempts.`;
+                document.querySelector(".restart-btn").style.display = "inline-block";  // Show the restart button
+            }
+        }
+
+        // Function to restart the game
+        function restartGame() {
+            startGame();
+        }
+
+        // Start the game when the page loads
+        window.onload = startGame;
+    </script>
+</body>
+</html>

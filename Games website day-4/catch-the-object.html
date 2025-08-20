@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catch the Falling Object</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #f0f8ff;
+            font-family: Arial, sans-serif;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .object {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background-color: red;
+            border-radius: 50%;
+            top: 0;
+        }
+
+        #catcher {
+            position: absolute;
+            width: 100px;
+            height: 20px;
+            background-color: blue;
+            bottom: 20px;
+            left: calc(50% - 50px);
+        }
+
+        #score {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <div id="score">Score: 0</div>
+        <div id="catcher"></div>
+    </div>
+
+    <script>
+        const gameContainer = document.getElementById('game-container');
+        const catcher = document.getElementById('catcher');
+        const scoreDisplay = document.getElementById('score');
+        let score = 0;
+
+        function createFallingObject() {
+            const object = document.createElement('div');
+            object.classList.add('object');
+            object.style.left = `${Math.random() * (window.innerWidth - 40)}px`;
+            gameContainer.appendChild(object);
+
+            let fallInterval = setInterval(() => {
+                const objectTop = object.offsetTop;
+                if (objectTop >= window.innerHeight - 60) {
+                    const objectLeft = object.offsetLeft;
+                    const catcherLeft = catcher.offsetLeft;
+                    const catcherRight = catcherLeft + catcher.offsetWidth;
+
+                    if (objectLeft + 40 >= catcherLeft && objectLeft <= catcherRight) {
+                        score++;
+                        scoreDisplay.textContent = `Score: ${score}`;
+                        gameContainer.removeChild(object);
+                        clearInterval(fallInterval);
+                    } else if (objectTop >= window.innerHeight - 40) {
+                        alert('Game Over! Your score is ' + score);
+                        location.reload();
+                    }
+                }
+                object.style.top = `${objectTop + 5}px`;
+            }, 20);
+        }
+
+        document.addEventListener('mousemove', (event) => {
+            catcher.style.left = `${event.clientX - catcher.offsetWidth / 2}px`;
+        });
+
+        setInterval(createFallingObject, 1000);
+    </script>
+</body>
+</html>

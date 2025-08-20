@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tower Builder Game</title>
+    <style>
+        /* Internal CSS */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            overflow: hidden;
+            flex-direction: column;
+        }
+        #tower {
+            position: relative;
+            width: 100px;
+            height: 500px;
+            border: 2px solid #000;
+            background-color: #fff;
+            margin-bottom: 20px;
+        }
+        .block {
+            position: absolute;
+            width: 100%;
+            height: 50px;
+            background-color: red;
+            border: 1px solid #000;
+        }
+        #timer {
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="tower"></div>
+    <div id="timer">Time: 0s 000ms</div>
+
+    <script>
+        // Internal JavaScript
+        const tower = document.getElementById('tower');
+        const timerElement = document.getElementById('timer');
+        let currentTop = 450; // Initial top position of the first block
+        let gameStarted = false;
+        let secondsElapsed = 0;
+        let millisecondsElapsed = 0;
+        let timerInterval;
+
+        function createBlock() {
+            if (gameStarted) {
+                const block = document.createElement('div');
+                block.className = 'block';
+                block.style.top = currentTop + 'px';
+                tower.appendChild(block);
+                currentTop -= 50; // Move the next block up by 50px
+
+                // Check if the tower is completed
+                if (currentTop < 0) {
+                    clearInterval(timerInterval); // Stop the timer when the tower is completed
+                    alert('Congratulations! You have built the tower.');
+                    gameStarted = false;
+                    currentTop = 450; // Reset top for the next game
+                    resetTower(); // Remove all blocks
+                }
+            }
+        }
+
+        function resetTower() {
+            const blocks = document.querySelectorAll('.block');
+            blocks.forEach(block => block.remove());
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                millisecondsElapsed++;
+                if (millisecondsElapsed >= 100) {
+                    millisecondsElapsed = 0;
+                    secondsElapsed++;
+                }
+
+                // Format milliseconds to always show 3 digits (e.g., 001ms)
+                const formattedMilliseconds = millisecondsElapsed.toString().padStart(3, '0');
+                timerElement.textContent = `Time: ${secondsElapsed}s ${formattedMilliseconds}ms`;
+            }, 10); // Update every 10 milliseconds
+        }
+
+        tower.addEventListener('click', () => {
+            if (!gameStarted) {
+                gameStarted = true;
+                startTimer(); // Start the timer when the game begins
+            }
+            createBlock(); // Create a new block every click
+        });
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Quiz Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            margin: 0;
+        }
+        #quiz {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .question {
+            margin-bottom: 10px;
+        }
+        .choices {
+            list-style: none;
+            padding: 0;
+        }
+        .choices li {
+            margin-bottom: 8px;
+        }
+        .choices input {
+            margin-right: 10px;
+        }
+        #timer {
+            margin-bottom: 20px;
+        }
+        #score {
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz">
+        <div id="timer">Time: <span id="time">10</span> seconds</div>
+        <div id="question-container"></div>
+        <button onclick="submitQuiz()">Submit</button>
+        <div id="score"></div>
+    </div>
+    
+    <script>
+        const questions = [
+            { question: "What is the capital of France?", choices: ["Paris", "London", "Rome", "Berlin"], correct: "Paris" },
+            { question: "What is 2 + 2?", choices: ["3", "4", "5", "6"], correct: "4" },
+            { question: "What is the largest planet?", choices: ["Earth", "Mars", "Jupiter", "Saturn"], correct: "Jupiter" },
+            { question: "What is the chemical symbol for water?", choices: ["O2", "H2O", "CO2", "NaCl"], correct: "H2O" },
+            { question: "Who wrote 'To Kill a Mockingbird'?", choices: ["Harper Lee", "J.K. Rowling", "Mark Twain", "Ernest Hemingway"], correct: "Harper Lee" }
+        ];
+
+        let timeLeft = 10;
+        let score = 0;
+        let timer;
+        let currentQuestion;
+
+        function getRandomQuestion() {
+            return questions[Math.floor(Math.random() * questions.length)];
+        }
+
+        function displayQuestion() {
+            const container = document.getElementById('question-container');
+            container.innerHTML = '';
+            currentQuestion = getRandomQuestion();
+            
+            const questionDiv = document.createElement('div');
+            questionDiv.classList.add('question');
+            questionDiv.innerHTML = `<p>${currentQuestion.question}</p>`;
+
+            const choicesList = document.createElement('ul');
+            choicesList.classList.add('choices');
+            currentQuestion.choices.forEach(choice => {
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `<label><input type="radio" name="quiz" value="${choice}"> ${choice}</label>`;
+                choicesList.appendChild(listItem);
+            });
+
+            questionDiv.appendChild(choicesList);
+            container.appendChild(questionDiv);
+        }
+
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                document.getElementById('time').textContent = timeLeft;
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        function submitQuiz() {
+            clearInterval(timer);
+            const selected = document.querySelector('input[name="quiz"]:checked');
+            if (selected && selected.value === currentQuestion.correct) {
+                score++;
+            }
+            document.getElementById('score').textContent = `Your score is: ${score}`;
+        }
+
+        window.onload = function () {
+            displayQuestion();
+            startTimer();
+        };
+    </script>
+</body>
+</html>

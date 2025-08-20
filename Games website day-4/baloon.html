@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Balloon Pop Game</title>
+    <style>
+        /* Internal CSS */
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            overflow: hidden;
+        }
+        .balloon {
+            position: absolute;
+            width: 50px;
+            height: 70px;
+            background-color: red;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .balloon:hover {
+            transform: scale(1.1);
+        }
+        .popped {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Internal JavaScript
+        const colors = ['red', 'blue', 'green', 'yellow', 'purple'];
+        const body = document.body;
+
+        function createBalloon() {
+            const balloon = document.createElement('div');
+            balloon.className = 'balloon';
+            balloon.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+            balloon.style.left = `${Math.random() * (window.innerWidth - 50)}px`;
+            balloon.style.top = `${Math.random() * (window.innerHeight - 70)}px`;
+            balloon.addEventListener('click', popBalloon);
+            body.appendChild(balloon);
+        }
+
+        function popBalloon(event) {
+            const balloon = event.target;
+            balloon.classList.add('popped');
+            setTimeout(() => balloon.remove(), 100);
+            setTimeout(createBalloon, 500);  // Create a new balloon after a pop
+        }
+
+        for (let i = 0; i < 10; i++) {
+            createBalloon();
+        }
+    </script>
+</body>
+</html>

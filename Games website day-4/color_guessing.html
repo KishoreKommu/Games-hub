@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .color-display {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .color-options {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 10px;
+        }
+        .color-box {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Color Guessing Game</h1>
+    <div class="color-display" id="colorDisplay"></div>
+    <div class="color-options" id="colorOptions"></div>
+    <div class="message" id="message"></div>
+
+    <script>
+        const colors = [];
+        const colorDisplay = document.getElementById("colorDisplay");
+        const colorOptions = document.getElementById("colorOptions");
+        const message = document.getElementById("message");
+
+        function getRandomColor() {
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            return `rgb(${r}, ${g}, ${b})`;
+        }
+
+        function generateColors(num) {
+            for (let i = 0; i < num; i++) {
+                colors.push(getRandomColor());
+            }
+        }
+
+        function setupGame() {
+            generateColors(6);
+            const pickedColor = colors[Math.floor(Math.random() * colors.length)];
+            colorDisplay.textContent = pickedColor;
+
+            colors.forEach(color => {
+                const colorBox = document.createElement("div");
+                colorBox.classList.add("color-box");
+                colorBox.style.backgroundColor = color;
+                colorBox.addEventListener("click", function() {
+                    if (color === pickedColor) {
+                        message.textContent = "Correct!";
+                    } else {
+                        message.textContent = "Try Again!";
+                        this.style.backgroundColor = "#f0f0f0";
+                    }
+                });
+                colorOptions.appendChild(colorBox);
+            });
+        }
+
+        setupGame();
+    </script>
+</body>
+</html>
